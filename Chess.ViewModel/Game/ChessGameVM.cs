@@ -23,7 +23,12 @@ namespace Chess.ViewModel.Game
         /// <summary>
         /// Represents the rulebook for the game.
         /// </summary>
-        private readonly IRulebook rulebook;
+        private  IRulebook rulebook;
+
+        /// <summary>
+        /// Represents if the current ruleset is special
+        /// </summary>
+        private bool SpecialRules { get; set; } = false;
 
         /// <summary>
         /// Represents the disambiguation mechanism if multiple updates are available for a target field.
@@ -54,17 +59,10 @@ namespace Chess.ViewModel.Game
         /// Initializes a new instance of the <see cref="ChessGameVM"/> class.
         /// </summary>
         /// <param name="updateSelector">The disambiguation mechanism if multiple updates are available for a target field.</param>
-        public ChessGameVM(Func<IList<Update>, Update> updateSelector,bool standard)
+        public ChessGameVM(Func<IList<Update>, Update> updateSelector)
         {
-            if (standard)
-            {
-                this.rulebook = new StandardRulebook();
-            }
-            else
-            {
-                this.rulebook = new _960RuleBook();
-            }
-                
+            
+            this.rulebook = new StandardRulebook();
             this.Game = this.rulebook.CreateGame();
             this.board = new BoardVM(this.Game.Board);
             this.updateSelector = updateSelector;
@@ -130,6 +128,37 @@ namespace Chess.ViewModel.Game
                     () => true,
                     () =>
                     {
+                        
+                        this.Game = this.rulebook.CreateGame();
+                        this.Board = new BoardVM(this.Game.Board);
+                        this.OnPropertyChanged(nameof(this.Status));
+                    }
+                );
+            }
+        }
+
+        /// <summary>
+        /// Gets the command that switches between rulebooks
+        /// </summary>
+        public GenericCommand ChangeCommand
+        {
+            get
+            {
+                return new GenericCommand(
+                    () => true,
+                    () =>
+                    { 
+                        if (SpecialRules)
+                        {
+                            this.rulebook = new StandardRulebook();
+                            SpecialRules = false;
+                        }
+                        else
+                        {
+                            this.rulebook = new _960RuleBook();
+                            SpecialRules = true;
+                        }
+                            
                         this.Game = this.rulebook.CreateGame();
                         this.Board = new BoardVM(this.Game.Board);
                         this.OnPropertyChanged(nameof(this.Status));

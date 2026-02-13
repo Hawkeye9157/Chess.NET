@@ -37,7 +37,7 @@ namespace Chess.View.Window
         {
 
             this.InitializeComponent();
-            this.game = new ChessGameVM(this.Choose,false); //hard coded for now so app doesn't break
+            this.game = new ChessGameVM(this.Choose); //hard coded for now so app doesn't break
             this.promotionSelector = new PromotionSelector();
             this.DataContext = this.game;
         }

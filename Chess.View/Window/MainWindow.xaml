@@ -15,6 +15,7 @@
     <Window.InputBindings>
         <KeyBinding Key="N" Modifiers="Ctrl" Command="{Binding NewCommand}" />
         <KeyBinding Key="Z" Modifiers="Ctrl" Command="{Binding UndoCommand}" />
+        <KeyBinding Key="M" Modifiers="Ctrl" Command="{Binding ChangeCommand}" />
     </Window.InputBindings>
     <DockPanel>
         <DockPanel.Resources>
@@ -35,6 +36,11 @@
                 <MenuItem Header="Undo" Command="{Binding UndoCommand}" InputGestureText="Ctrl+Z">
                     <MenuItem.Icon>
                         <icon:UndoIcon />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="960" Command="{Binding ChangeCommand}" InputGestureText="Ctrl+9">
+                    <MenuItem.Icon>
+                        <icon:NewIcon />
                     </MenuItem.Icon>
                 </MenuItem>
                 <Separator />
